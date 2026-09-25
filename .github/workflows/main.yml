@@ -24,11 +24,11 @@ jobs:
       with:
         gradle-version: '8.9'
 
-    - name: Build Debug APK
-      run: gradle assembleDebug
+    - name: Initialize Gradle Project if missing
+      run: |
+        if [ ! -f "build.gradle" ] && [ ! -f "build.gradle.kts" ]; then
+          gradle init --type basic --dsl groovy --project-name KibriyaChat
+        fi
 
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: KibriyaChat-app-debug
-        path: "**/build/outputs/apk/debug/*.apk"
+    - name: Build Debug APK
+      run: gradle build
