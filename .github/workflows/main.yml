@@ -24,11 +24,8 @@ jobs:
       with:
         gradle-version: '8.9'
 
-    - name: Initialize Gradle Project if missing
-      run: |
-        if [ ! -f "build.gradle" ] && [ ! -f "build.gradle.kts" ]; then
-          gradle init --type basic --dsl groovy --project-name KibriyaChat
-        fi
+    - name: Initialize Gradle Project
+      run: gradle init --type basic --dsl groovy --project-name KibriyaChat --overwrite
 
     - name: Build Debug APK
       run: gradle build
