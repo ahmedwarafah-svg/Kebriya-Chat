@@ -15,7 +15,11 @@ jobs:
 
     - name: Unzip Project Files
       run: |
-        unzip -o kibriya-chat-v10-secure*.zip || true
+        unzip -o *.zip || true
+        # Move files from subfolder if unzipped into a folder
+        if [ -d "kibriya-chat-v10-secure" ]; then
+          cp -rn kibriya-chat-v10-secure/* . || true
+        fi
 
     - name: Set up JDK 17
       uses: actions/setup-java@v4
@@ -32,7 +36,12 @@ jobs:
       run: chmod +x gradlew || true
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug || gradle assembleDebug
+      run: |
+        if [ -f "./gradlew" ]; then
+          ./gradlew assembleDebug
+        else
+          gradle assembleDebug
+        fi
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
